@@ -1,0 +1,28 @@
+databaseChangeLog:
+- changeSet:
+    id: 1702398556817-1
+    author: Niko (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: usersPK
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+                nullable: false
+                unique: true
+            name: email
+            type: VARCHAR(255)
+        - column:
+            constraints:
+                nullable: false
+            name: password
+            type: VARCHAR(255)
+        tableName: users
+
