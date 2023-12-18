@@ -31,21 +31,23 @@ public class JsonConverter implements AttributeConverter<List<WhiteboardElement>
         try {
             JSONArray jsonArray = new JSONArray(whiteboardElementsJSON);
             List<WhiteboardElement> whiteboardElements = new ArrayList<>();
-            Optional<WhiteboardElementFactory> whiteboardElementFactory = Optional.empty();
+            Optional<WhiteboardElementFactory> whiteboardElementFactory;
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject elementJSON = jsonArray.getJSONObject(i);
                 String elementType = elementJSON.getString("element-type");
 
-                switch (elementType) {
-                    case "RECT" -> whiteboardElementFactory = Optional.of(new RectangleFactory());
-                    case "CIRCLE" -> whiteboardElementFactory = Optional.of(new CircleFactory());
-                    case "LINE" -> whiteboardElementFactory = Optional.of(new LineFactory());
-                    case "PATH" -> whiteboardElementFactory = Optional.of(new PathFactory());
-                    case "TEXT" -> whiteboardElementFactory = Optional.of(new TextFactory());
-                }
+                whiteboardElementFactory = switch (elementType) {
+                    case "RECT" -> Optional.of(new RectangleFactory());
+                    case "CIRCLE" -> Optional.of(new CircleFactory());
+                    case "LINE" -> Optional.of(new LineFactory());
+                    case "PATH" -> Optional.of(new PathFactory());
+                    case "TEXT" -> Optional.of(new TextFactory());
+                    default -> Optional.empty();
+                };
+
                 whiteboardElementFactory.ifPresent(
-                        factory -> whiteboardElements.add(factory.createWhiteboardElement(elementJSON))
+                    elementFactory -> whiteboardElements.add(elementFactory.createWhiteboardElement(elementJSON))
                 );
             }
             return whiteboardElements;

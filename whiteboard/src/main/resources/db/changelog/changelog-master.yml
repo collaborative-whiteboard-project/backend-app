@@ -1,4 +1,4 @@
 databaseChangeLog:
   -
 #  - include:
-#      file:  src\main\resources\db\changelog\changes\project-entity.yml
+#      file:  src\main\resources\db\changelog\changes\user-project-entity.yml
