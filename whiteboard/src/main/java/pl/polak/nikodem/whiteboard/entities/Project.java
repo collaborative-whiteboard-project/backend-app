@@ -1,11 +1,9 @@
 package pl.polak.nikodem.whiteboard.entities;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import pl.polak.nikodem.whiteboard.helpers.JsonConverter;
 import pl.polak.nikodem.whiteboard.models.WhiteboardElement;
@@ -34,6 +32,9 @@ public class Project {
     @Column(name = "whiteboard_elements" ,columnDefinition = "json")
     @ColumnTransformer(write = "?::json")
     private List<WhiteboardElement> whiteboardElementsJSON;
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    List<UserProject> members;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
