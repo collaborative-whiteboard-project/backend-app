@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CollaborativeWebWhiteboardApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CollaborativeWebWhiteboardApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CollaborativeWebWhiteboardApplication.class, args);
+    }
 
 }
