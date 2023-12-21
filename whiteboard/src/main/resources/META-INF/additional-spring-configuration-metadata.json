@@ -1,0 +1,11 @@
+{"properties": [
+  {
+    "name": "whiteboard.app.jwtExpirationMs",
+    "type": "java.lang.String"
+  },
+  {
+    "name": "whiteboard.app.jwtSecret",
+    "type": "java.lang.Long"
+  }
+]
+}
