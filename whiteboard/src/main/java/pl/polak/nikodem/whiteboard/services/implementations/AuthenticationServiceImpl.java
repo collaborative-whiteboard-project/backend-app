@@ -29,7 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(UserRole.ADMIN)
+                .role(UserRole.REGULAR_USER)
                 .build();
 
         user = userService.save(user);
