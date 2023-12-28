@@ -1,7 +1,7 @@
 package pl.polak.nikodem.whiteboard.services.interfaces;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
-import pl.polak.nikodem.whiteboard.dtos.UserResponse;
+import pl.polak.nikodem.whiteboard.dtos.user.UserResponse;
 import pl.polak.nikodem.whiteboard.entities.User;
 import pl.polak.nikodem.whiteboard.exceptions.UserNotFoundException;
 

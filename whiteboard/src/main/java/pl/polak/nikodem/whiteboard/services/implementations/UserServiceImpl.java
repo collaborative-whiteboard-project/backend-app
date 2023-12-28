@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.polak.nikodem.whiteboard.dtos.UserResponse;
+import pl.polak.nikodem.whiteboard.dtos.user.UserResponse;
 import pl.polak.nikodem.whiteboard.entities.User;
 import pl.polak.nikodem.whiteboard.exceptions.UserNotFoundException;
 import pl.polak.nikodem.whiteboard.repositories.UserRepository;
