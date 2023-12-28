@@ -1,4 +1,4 @@
-package pl.polak.nikodem.whiteboard.dtos;
+package pl.polak.nikodem.whiteboard.dtos.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

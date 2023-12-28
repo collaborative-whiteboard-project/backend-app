@@ -4,9 +4,9 @@ package pl.polak.nikodem.whiteboard.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.polak.nikodem.whiteboard.dtos.JwtAuthenticationResponse;
-import pl.polak.nikodem.whiteboard.dtos.SignInRequest;
-import pl.polak.nikodem.whiteboard.dtos.SignUpRequest;
+import pl.polak.nikodem.whiteboard.dtos.auth.JwtAuthenticationResponse;
+import pl.polak.nikodem.whiteboard.dtos.auth.SignInRequest;
+import pl.polak.nikodem.whiteboard.dtos.auth.SignUpRequest;
 import pl.polak.nikodem.whiteboard.services.interfaces.AuthenticationService;
 
 @RestController

@@ -1,4 +1,4 @@
-package pl.polak.nikodem.whiteboard.dtos;
+package pl.polak.nikodem.whiteboard.dtos.auth;
 
 import lombok.*;
 
