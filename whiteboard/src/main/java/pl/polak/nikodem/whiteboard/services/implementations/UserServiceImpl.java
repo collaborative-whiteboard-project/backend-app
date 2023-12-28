@@ -1,16 +1,21 @@
 package pl.polak.nikodem.whiteboard.services.implementations;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.polak.nikodem.whiteboard.dtos.user.UserResponse;
 import pl.polak.nikodem.whiteboard.entities.User;
+import pl.polak.nikodem.whiteboard.exceptions.UserNotAuthenticatedException;
 import pl.polak.nikodem.whiteboard.exceptions.UserNotFoundException;
 import pl.polak.nikodem.whiteboard.repositories.UserRepository;
 import pl.polak.nikodem.whiteboard.services.interfaces.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -62,6 +67,24 @@ public class UserServiceImpl implements UserService {
                            .email(email)
                            .role(user.getRole().name())
                            .build();
+    }
+
+    @Override
+    public String getAuthenticatedUserEmail() throws UserNotAuthenticatedException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null) {
+            throw new UserNotAuthenticatedException("User not authenticated");
+        }
+
+        if (auth instanceof UsernamePasswordAuthenticationToken authToken) {
+            Object principal = authToken.getPrincipal();
+
+            if (principal instanceof UserDetails userDetails) {
+                return userDetails.getUsername();
+            }
+        }
+        throw new UserNotAuthenticatedException("User not authenticated");
     }
 
 
