@@ -14,9 +14,9 @@ import java.util.List;
 @Slf4j
 public class DefaultExceptionHandler {
 
-    @ExceptionHandler(value = UserNotFoundException.class)
+    @ExceptionHandler(value = {UserNotFoundException.class, ProjectNotFound.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleUserNotFoundException(UserNotFoundException exception) {
+    public String handleUserNotFoundException(Exception exception) {
         return exception.getMessage();
     }
 
