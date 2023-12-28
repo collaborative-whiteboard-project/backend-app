@@ -16,9 +16,13 @@ public class DefaultExceptionHandler {
 
     @ExceptionHandler(value = {UserNotFoundException.class, ProjectNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleUserNotFoundException(Exception exception) {
+    public String handleNotFoundException(Exception exception) {
         return exception.getMessage();
     }
+
+    @ExceptionHandler(value = UserNotAuthenticatedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public String handleUserNotAuthenticatedException(Exception exception) { return exception.getMessage(); }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
