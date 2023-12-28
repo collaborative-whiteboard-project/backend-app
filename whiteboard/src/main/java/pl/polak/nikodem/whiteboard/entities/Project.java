@@ -42,6 +42,7 @@ public class Project {
     private OffsetDateTime createdAt;
 
     @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified_at")
-    private Instant modifiedAt;
+    private OffsetDateTime modifiedAt;
 }
