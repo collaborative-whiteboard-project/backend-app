@@ -24,6 +24,10 @@ public class DefaultExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public String handleUserNotAuthenticatedException(Exception exception) { return exception.getMessage(); }
 
+    @ExceptionHandler(value = UserNotAProjectMemberException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String handleUserNotAProjectMemberException(Exception exception) { return exception.getMessage(); }
+
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public List<String> handleValidationException(MethodArgumentNotValidException exception) {
