@@ -33,7 +33,7 @@ public class Project {
     @ColumnTransformer(write = "?::json")
     private List<WhiteboardElement> whiteboardElementsJSON;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     List<UserProject> members;
 
     @CreationTimestamp
