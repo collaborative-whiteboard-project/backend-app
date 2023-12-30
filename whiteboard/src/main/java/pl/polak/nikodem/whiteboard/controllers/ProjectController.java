@@ -58,4 +58,10 @@ public class ProjectController {
         String email = userService.getAuthenticatedUserEmail();
         projectService.deleteProjectMembers(id, email, request.getEmails());
     }
+
+    @DeleteMapping("/{id}/delete")
+    public void deleteProject(@PathVariable Long id) throws UserNotAuthenticatedException, ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
+        String email = userService.getAuthenticatedUserEmail();
+        projectService.deleteProject(id, email);
+    }
 }

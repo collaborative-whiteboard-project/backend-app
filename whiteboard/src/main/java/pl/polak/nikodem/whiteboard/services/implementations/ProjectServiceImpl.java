@@ -130,6 +130,12 @@ public class ProjectServiceImpl implements ProjectService {
         }).forEach(userProjectRepository::delete);
     }
 
+    @Override
+    @Transactional
+    public void deleteProject(Long id, String userEmail) throws ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
+        Project project = getProjectForAuthenticatedUser(id, userEmail, ProjectMemberRole.OWNER);
+        projectRepository.delete(project);
+    }
 
 
     private Project getProjectForAuthenticatedUser(Long id, String userEmail, ProjectMemberRole requiredUserRole) throws ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
