@@ -16,7 +16,7 @@ public class DefaultExceptionHandler {
 
     @ExceptionHandler(value = {UserNotFoundException.class, ProjectNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleNotFoundException(Exception exception) {
+    public String handleNotFoundExceptions(Exception exception) {
         return exception.getMessage();
     }
 
@@ -24,9 +24,9 @@ public class DefaultExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public String handleUserNotAuthenticatedException(Exception exception) { return exception.getMessage(); }
 
-    @ExceptionHandler(value = UserNotAProjectMemberException.class)
+    @ExceptionHandler(value = {UserNotAProjectMemberException.class, InsufficientProjectMemberRoleException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public String handleUserNotAProjectMemberException(Exception exception) { return exception.getMessage(); }
+    public String handleUserNotAuthorizedExceptions(Exception exception) { return exception.getMessage(); }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
