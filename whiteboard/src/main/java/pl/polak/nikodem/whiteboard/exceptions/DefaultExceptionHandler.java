@@ -14,11 +14,19 @@ import java.util.List;
 @Slf4j
 public class DefaultExceptionHandler {
 
-    @ExceptionHandler(value = UserNotFoundException.class)
+    @ExceptionHandler(value = {UserNotFoundException.class, ProjectNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleUserNotFoundException(UserNotFoundException exception) {
+    public String handleNotFoundExceptions(Exception exception) {
         return exception.getMessage();
     }
+
+    @ExceptionHandler(value = UserNotAuthenticatedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public String handleUserNotAuthenticatedException(Exception exception) { return exception.getMessage(); }
+
+    @ExceptionHandler(value = {UserNotAProjectMemberException.class, InsufficientProjectMemberRoleException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String handleUserNotAuthorizedExceptions(Exception exception) { return exception.getMessage(); }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

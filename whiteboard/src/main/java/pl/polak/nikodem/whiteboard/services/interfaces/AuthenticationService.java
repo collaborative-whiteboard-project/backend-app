@@ -1,11 +1,8 @@
 package pl.polak.nikodem.whiteboard.services.interfaces;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import pl.polak.nikodem.whiteboard.dtos.JwtAuthenticationResponse;
-import pl.polak.nikodem.whiteboard.dtos.SignInRequest;
-import pl.polak.nikodem.whiteboard.dtos.SignUpRequest;
-import pl.polak.nikodem.whiteboard.entities.User;
-import pl.polak.nikodem.whiteboard.enums.UserRole;
+import pl.polak.nikodem.whiteboard.dtos.auth.JwtAuthenticationResponse;
+import pl.polak.nikodem.whiteboard.dtos.auth.SignInRequest;
+import pl.polak.nikodem.whiteboard.dtos.auth.SignUpRequest;
 
 public interface AuthenticationService {
 

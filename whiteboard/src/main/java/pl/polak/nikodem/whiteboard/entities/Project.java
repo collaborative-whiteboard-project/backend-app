@@ -33,7 +33,7 @@ public class Project {
     @ColumnTransformer(write = "?::json")
     private List<WhiteboardElement> whiteboardElementsJSON;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     List<UserProject> members;
 
     @CreationTimestamp
@@ -42,6 +42,7 @@ public class Project {
     private OffsetDateTime createdAt;
 
     @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modified_at")
-    private Instant modifiedAt;
+    private OffsetDateTime modifiedAt;
 }

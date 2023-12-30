@@ -4,8 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.polak.nikodem.whiteboard.dtos.UserRequest;
-import pl.polak.nikodem.whiteboard.dtos.UserResponse;
+import pl.polak.nikodem.whiteboard.dtos.user.UserRequest;
+import pl.polak.nikodem.whiteboard.dtos.user.UserResponse;
 import pl.polak.nikodem.whiteboard.exceptions.UserNotFoundException;
 import pl.polak.nikodem.whiteboard.services.interfaces.UserService;
 
