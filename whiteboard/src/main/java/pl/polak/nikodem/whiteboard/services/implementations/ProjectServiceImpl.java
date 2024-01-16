@@ -21,6 +21,7 @@ import pl.polak.nikodem.whiteboard.repositories.UserRepository;
 import pl.polak.nikodem.whiteboard.services.interfaces.ProjectService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,11 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final UserProjectRepository userProjectRepository;
+
+    @Override
+    public Optional<Project> getProjectById(Long id) {
+        return projectRepository.findById(id);
+    }
 
     @Override
     @Transactional
@@ -135,6 +141,18 @@ public class ProjectServiceImpl implements ProjectService {
     public void deleteProject(Long id, String userEmail) throws ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
         Project project = getProjectForAuthenticatedUser(id, userEmail, ProjectMemberRole.OWNER);
         projectRepository.delete(project);
+    }
+
+    @Override
+    @Transactional
+    public boolean isUserIsProjectMember(Long projectId, String userEmail) throws ProjectNotFoundException {
+        Project project = projectRepository.findById(projectId)
+                                           .orElseThrow(() -> new ProjectNotFoundException("Project with id not found"));
+        List<UserProject> projectMembers = project.getMembers();
+        return projectMembers.stream()
+                             .anyMatch(member -> member.getUser()
+                                                       .getEmail()
+                                                       .equals(userEmail));
     }
 
 
