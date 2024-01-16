@@ -24,4 +24,17 @@ public class Text extends WhiteboardElement {
 
     @JsonProperty("font-size")
     private String fontSize;
+
+    @Override
+    public void updateProperty(String propertyJSONname, String value) {
+        switch (propertyJSONname) {
+            case "transform" -> this.transform = value;
+            case "x-position" -> this.xPosition = value;
+            case "y-position" -> this.yPosition = value;
+            case "text" -> this.text = value;
+            case "fontSize" -> this.fontSize = value;
+            default -> {
+            }
+        }
+    }
 }

@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class Path extends WhiteboardElement {
     @JsonProperty("path")
-    private String path; // d attribute from svg's path element
+    private String path; // d attribute from svg's path element: https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths
 
     @JsonProperty("fill-color")
     private String fillColor;
@@ -27,4 +27,18 @@ public class Path extends WhiteboardElement {
 
     @JsonProperty("fill-opacity")
     private String fillOpacity;
+
+    @Override
+    public void updateProperty(String propertyJSONname, String value) {
+        switch (propertyJSONname) {
+            case "transform" -> this.transform = value;
+            case "path" -> this.path = value;
+            case "fill-color" -> this.fillColor = value;
+            case "stroke-width" -> this.strokeWidth = value;
+            case "stroke-color" -> this.strokeColor = value;
+            case "fill-opacity" -> this.fillOpacity = value;
+            default -> {
+            }
+        }
+    }
 }

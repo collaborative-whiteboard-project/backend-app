@@ -13,7 +13,7 @@ import pl.polak.nikodem.whiteboard.enums.ElementType;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WhiteboardElement {
+public abstract class WhiteboardElement {
     @JsonProperty("id")
     protected String id;
 
@@ -22,4 +22,6 @@ public class WhiteboardElement {
 
     @JsonProperty("transform")
     protected String transform;
+
+    abstract public void updateProperty(String propertyJSONname, String value);
 }
