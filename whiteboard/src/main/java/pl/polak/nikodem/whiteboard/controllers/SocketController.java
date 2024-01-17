@@ -39,8 +39,8 @@ public class SocketController {
     private void onDisconnected(SocketIOClient client) {
         try {
             socketService.disconnectUser(client);
-        } catch (ProjectNotFoundException ignored) {
-            // TODO
+        } catch (ProjectNotFoundException e) {
+            this.socketService.sendErrorMessage( client, e.getMessage());
         }
         log.debug("Disconnected");
     }
@@ -49,8 +49,8 @@ public class SocketController {
         return (client, data, ackSender) -> {
             try {
                 socketService.joinRoom(client, data.getJwtToken(), data.getProjectId());
-            } catch (Exception ignored) {
-                // TODO
+            } catch (Exception e) {
+                this.socketService.sendErrorMessage( client, e.getMessage());
             }
         };
     }
@@ -65,8 +65,8 @@ public class SocketController {
         return (client, data, ackSender) -> {
             try {
                 socketService.leaveRoom(client, data.getJwtToken(), data.getProjectId());
-            } catch (Exception ignored) {
-                // TODO
+            } catch (Exception e) {
+                this.socketService.sendErrorMessage( client, e.getMessage());
             }
         };
     }
