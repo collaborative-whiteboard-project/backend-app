@@ -96,6 +96,11 @@ public class SocketServiceImpl implements SocketService {
         }
     }
 
+    @Override
+    public void sendErrorMessage(SocketIOClient client, String errorMessage) {
+        client.sendEvent("error", errorMessage);
+    }
+
     private void createElement(SocketIOClient client, CreateWhiteboardElementData data) {
         ProjectContentResponse projectContent = cachedProjectsContent.get(data.getProjectId());
         if (projectContent.getElements()

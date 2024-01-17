@@ -13,4 +13,5 @@ public interface SocketService {
     void leaveRoom(SocketIOClient client, String jwtToken, String projectId) throws UserNotAuthenticatedException, ProjectNotFoundException;
     void disconnectUser(SocketIOClient client) throws ProjectNotFoundException;
     void editWhiteboard(SocketIOClient client, WhiteboardOperationData data);
+    void sendErrorMessage(SocketIOClient client, String errorMessage);
 }
