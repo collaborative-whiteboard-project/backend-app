@@ -4,10 +4,7 @@ package pl.polak.nikodem.whiteboard.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import pl.polak.nikodem.whiteboard.dtos.auth.ChangePasswordRequest;
-import pl.polak.nikodem.whiteboard.dtos.auth.JwtAuthenticationResponse;
-import pl.polak.nikodem.whiteboard.dtos.auth.SignInRequest;
-import pl.polak.nikodem.whiteboard.dtos.auth.SignUpRequest;
+import pl.polak.nikodem.whiteboard.dtos.auth.*;
 import pl.polak.nikodem.whiteboard.exceptions.UserNotAuthenticatedException;
 import pl.polak.nikodem.whiteboard.exceptions.UserNotFoundException;
 import pl.polak.nikodem.whiteboard.services.interfaces.AuthenticationService;
@@ -32,6 +29,16 @@ public class AuthenticationController {
     @PatchMapping("/change/user/password")
     public JwtAuthenticationResponse changePassword(@RequestBody @Valid ChangePasswordRequest request) throws UserNotFoundException, UserNotAuthenticatedException {
         return this.authenticationService.changePassword(request);
+    }
+
+    @PostMapping("/reset/password/email")
+    public void sendResetPasswordEmail(@RequestBody @Valid SendResetPasswordEmailRequest request) throws UserNotFoundException {
+        this.authenticationService.sendResetPasswordEmail(request);
+    }
+
+    @PatchMapping("/reset/password")
+    public void resetUserPassword(@RequestBody @Valid ResetPasswordRequest request) {
+
     }
 
 }
