@@ -68,25 +68,23 @@ public class SocketServiceImpl implements SocketService {
     }
 
     @Override
-    public void disconnectUser(SocketIOClient client) throws ProjectNotFoundException {
+    public void disconnectUser(SocketIOClient client) {
         Set<String> userRooms = client.getAllRooms();
         userRooms.forEach(room -> {
-            client.leaveRoom(room);
             if (getProjectUsers(room).isEmpty()) {
                 try {
                     saveProjectChangesToDatabase(room);
                     cachedProjectsContent.remove(room);
-                } catch (ProjectNotFoundException ignored) {
-                    // TODO
+                } catch (ProjectNotFoundException e) {
+                    this.sendErrorMessage(client, e.getMessage());
                 }
             }
+            client.leaveRoom(room);
         });
     }
 
     @Override
     public void editWhiteboard(SocketIOClient client, WhiteboardOperationData data) {
-        ProjectContentResponse projectContent = cachedProjectsContent.get(data.getProjectId());
-
         if (data instanceof CreateWhiteboardElementData createData) {
             createElement(client, createData);
         } else if (data instanceof UpdateWhiteboardElementData updateData) {
@@ -108,9 +106,7 @@ public class SocketServiceImpl implements SocketService {
                           .noneMatch(element -> element.getId().equals(data.getElement().getId()))) {
             projectsChanges.get(data.getProjectId()).add(data);
             socketIOServer.getRoomOperations(data.getProjectId()).getClients().forEach(user -> {
-                if (!user.equals(client)) {
-                    user.sendEvent("createElement", data);
-                }
+                user.sendEvent("createElement", data);
             });
         } else {
             client.sendEvent("removeElement", DeleteWhiteboardElementData.builder()
@@ -123,12 +119,10 @@ public class SocketServiceImpl implements SocketService {
 
     private void updateElement(SocketIOClient client, UpdateWhiteboardElementData data) {
         ProjectContentResponse projectContent = cachedProjectsContent.get(data.getProjectId());
-        if(projectContent.getElements().stream().anyMatch(element -> element.getId().equals(data.getId()))) {
+        if (projectContent.getElements().stream().anyMatch(element -> element.getId().equals(data.getId()))) {
             projectsChanges.get(data.getProjectId()).add(data);
             socketIOServer.getRoomOperations(data.getProjectId()).getClients().forEach(user -> {
-               if (!user.equals(client)) {
-                   user.sendEvent("createElement", data);
-               }
+                user.sendEvent("createElement", data);
             });
         } else {
             client.sendEvent("removeElement", DeleteWhiteboardElementData.builder()
@@ -144,9 +138,7 @@ public class SocketServiceImpl implements SocketService {
         if (projectContent.getElements().stream().anyMatch(element -> element.getId().equals(data.getId()))) {
             projectsChanges.get(data.getProjectId()).add(data);
             socketIOServer.getRoomOperations(data.getProjectId()).getClients().forEach(user -> {
-                if (!user.equals(client)) {
-                    user.sendEvent("deleteElement", data);
-                }
+                user.sendEvent("deleteElement", data);
             });
         }
     }
