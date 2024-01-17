@@ -15,7 +15,6 @@ import pl.polak.nikodem.whiteboard.exceptions.UserNotFoundException;
 import pl.polak.nikodem.whiteboard.repositories.UserRepository;
 import pl.polak.nikodem.whiteboard.services.interfaces.UserService;
 
-import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -40,6 +39,8 @@ public class UserServiceImpl implements UserService {
                     .map(user -> UserResponse.builder()
                                              .id(user.getId())
                                              .email(user.getEmail())
+                                             .firstName(user.getFirstName())
+                                             .lastName(user.getLastName())
                                              .role(user.getRole().name())
                                              .build())
                     .toList();
@@ -55,19 +56,26 @@ public class UserServiceImpl implements UserService {
         return UserResponse.builder()
                            .id(id)
                            .email(user.getEmail())
+                           .firstName(user.getFirstName())
+                           .lastName(user.getLastName())
                            .role(user.getRole().name())
                            .build();
     }
 
+
     @Override
     public UserResponse getUserByEmail(String email) throws UserNotFoundException {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User with id not found"));
+        User user = userRepository.findByEmail(email)
+                                  .orElseThrow(() -> new UserNotFoundException("User with id not found"));
         return UserResponse.builder()
                            .id(user.getId())
                            .email(email)
+                           .firstName(user.getFirstName())
+                           .lastName(user.getLastName())
                            .role(user.getRole().name())
                            .build();
     }
+
 
     @Override
     public String getAuthenticatedUserEmail() throws UserNotAuthenticatedException {
