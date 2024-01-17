@@ -53,6 +53,11 @@ public class ProjectController {
         projectService.addProjectMembers(id, email, request.getMembers());
     }
 
+    @PatchMapping("/{id}/change/data")
+    public void changeProjectData(@PathVariable Long id, @RequestBody @Valid ChangeProjectDataRequest request) {
+        this.projectService.changeProjectData(id, request);
+    }
+
     @DeleteMapping("/{id}/members/delete")
     public void deleteProjectMembers(@PathVariable Long id, @RequestBody @Valid DeleteProjectMembersRequest request) throws UserNotAuthenticatedException, ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
         String email = userService.getAuthenticatedUserEmail();
