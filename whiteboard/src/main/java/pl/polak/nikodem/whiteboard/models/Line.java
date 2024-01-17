@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Line extends WhiteboardElement{
-    @JsonProperty("x1-position")
+    @JsonProperty("lini ")
     private String x1Position;
 
     @JsonProperty("y1-position")
@@ -30,4 +30,19 @@ public class Line extends WhiteboardElement{
 
     @JsonProperty("stroke-color")
     private String strokeColor;
+
+    @Override
+    public void updateProperty(String propertyJSONname, String value) {
+        switch (propertyJSONname) {
+            case "transform" -> this.transform = value;
+            case "x1-position" -> this.x1Position = value;
+            case "y1-position" -> this.y1Position = value;
+            case "x2-position" -> this.x2Position = value;
+            case "y2-position" -> this.y2Position = value;
+            case "stroke-width" -> this.strokeWidth = value;
+            case "stroke-color" -> this.strokeColor = value;
+            default -> {
+            }
+        }
+    }
 }

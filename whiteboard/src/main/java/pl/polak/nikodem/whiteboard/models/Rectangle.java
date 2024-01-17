@@ -36,4 +36,21 @@ public class Rectangle extends WhiteboardElement {
 
     @JsonProperty("fill-opacity")
     private String fillOpacity;
+
+    @Override
+    public void updateProperty(String propertyJSONname, String value) {
+        switch (propertyJSONname) {
+            case "transform" -> this.transform = value;
+            case "x-position" -> this.xPosition = value;
+            case "y-position" -> this.yPosition = value;
+            case "width" -> this.width = value;
+            case "height" -> this.height = value;
+            case "fill-color" -> this.fillColor = value;
+            case "stroke-width" -> this.strokeWidth = value;
+            case "stroke-color" -> this.strokeColor = value;
+            case "fill-opacity" -> this.fillOpacity = value;
+            default -> {
+            }
+        }
+    }
 }
