@@ -3,14 +3,12 @@ package pl.polak.nikodem.whiteboard.services.implementations;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.polak.nikodem.whiteboard.dtos.project.ProjectContentResponse;
-import pl.polak.nikodem.whiteboard.dtos.project.ProjectMember;
-import pl.polak.nikodem.whiteboard.dtos.project.ProjectMemberResponse;
-import pl.polak.nikodem.whiteboard.dtos.project.SimpleProjectResponse;
+import pl.polak.nikodem.whiteboard.dtos.project.*;
 import pl.polak.nikodem.whiteboard.entities.Project;
 import pl.polak.nikodem.whiteboard.entities.User;
 import pl.polak.nikodem.whiteboard.entities.UserProject;
 import pl.polak.nikodem.whiteboard.enums.ProjectMemberRole;
+import pl.polak.nikodem.whiteboard.enums.UserRole;
 import pl.polak.nikodem.whiteboard.exceptions.InsufficientProjectMemberRoleException;
 import pl.polak.nikodem.whiteboard.exceptions.ProjectNotFoundException;
 import pl.polak.nikodem.whiteboard.exceptions.UserNotAProjectMemberException;
@@ -33,6 +31,24 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Optional<Project> getProjectById(Long id) {
         return projectRepository.findById(id);
+    }
+
+    @Override
+    public ProjectResponse getProjectById(Long id, String email) throws ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
+        Project project = getProjectForAuthenticatedUser(id, email, ProjectMemberRole.VIEWER);
+        List<ProjectMember> members = project.getMembers().stream().map(userProject -> {
+            User user = userProject.getUser();
+            return ProjectMember.builder()
+                                .memberEmail(user.getEmail())
+                                .memberRole(userProject.getMemberRole().name())
+                                .build();
+        }).toList();
+        return ProjectResponse.builder()
+                              .id(project.getId())
+                              .name(project.getProjectName())
+                              .members(members)
+                              .modifiedAt(project.getModifiedAt().toLocalDateTime())
+                              .build();
     }
 
     @Override
@@ -149,22 +165,57 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectRepository.findById(projectId)
                                            .orElseThrow(() -> new ProjectNotFoundException("Project with id not found"));
         List<UserProject> projectMembers = project.getMembers();
-        return projectMembers.stream()
-                             .anyMatch(member -> member.getUser()
-                                                       .getEmail()
-                                                       .equals(userEmail));
+        return projectMembers.stream().anyMatch(member -> member.getUser().getEmail().equals(userEmail));
     }
 
+    @Override
+    @Transactional
+    public void changeProjectData(Long projectId, ChangeProjectDataRequest request) throws ProjectNotFoundException {
+        Project project = projectRepository.findById(projectId)
+                                           .orElseThrow(() -> new ProjectNotFoundException("Project with id not found"));
+        List<UserProject> userProjectList = project.getMembers();
+
+        userProjectList.forEach(userProject -> {
+            User user = userProject.getUser();
+            Optional<ProjectMember> projectMember = findMemberInChangedProjectData(request, user);
+
+            if (projectMember.isPresent()) {
+                updateMemberRole(userProject, ProjectMemberRole.valueOf(projectMember.get().getMemberRole()));
+                this.userProjectRepository.save(userProject);
+            } else {
+                this.userProjectRepository.delete(userProject);
+            }
+        });
+
+        project.setProjectName(request.getProjectName());
+        this.projectRepository.save(project);
+    }
+
+    private Optional<ProjectMember> findMemberInChangedProjectData(ChangeProjectDataRequest request, User user) {
+        return request.getMembers()
+                      .stream()
+                      .filter(member -> member.getMemberEmail().equals(user.getEmail()))
+                      .findFirst();
+    }
+
+    private void updateMemberRole(UserProject userProject, ProjectMemberRole newRole) {
+        userProject.setMemberRole(newRole);
+    }
 
     private Project getProjectForAuthenticatedUser(Long id, String userEmail, ProjectMemberRole requiredUserRole) throws ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
         Project project = projectRepository.findById(id)
                                            .orElseThrow(() -> new ProjectNotFoundException("Project with id not found"));
 
         List<UserProject> projectMembers = project.getMembers();
+
         UserProject user = projectMembers.stream()
                                          .filter(userProject -> userProject.getUser().getEmail().equals(userEmail))
                                          .findAny()
                                          .orElseThrow(() -> new UserNotAProjectMemberException("User not a project member"));
+
+        if (user.getUser().getRole().equals(UserRole.ADMIN)) {
+            return project;
+        }
 
         ProjectMemberRole userRole = user.getMemberRole();
         switch (requiredUserRole) {
