@@ -8,8 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import pl.polak.nikodem.whiteboard.dtos.user.ChangeUserDataRequest;
 import pl.polak.nikodem.whiteboard.dtos.user.UserResponse;
 import pl.polak.nikodem.whiteboard.entities.User;
+import pl.polak.nikodem.whiteboard.enums.UserRole;
 import pl.polak.nikodem.whiteboard.exceptions.UserNotAuthenticatedException;
 import pl.polak.nikodem.whiteboard.exceptions.UserNotFoundException;
 import pl.polak.nikodem.whiteboard.repositories.UserRepository;
@@ -79,6 +81,41 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String getAuthenticatedUserEmail() throws UserNotAuthenticatedException {
+        return this.getAuthenticatedUser().getUsername();
+    }
+
+
+    @Override
+    public UserResponse changeUserData(ChangeUserDataRequest request) throws UserNotFoundException, UserNotAuthenticatedException {
+        User user = this.userRepository.findById(request.getId())
+                                       .orElseThrow(() -> new UserNotFoundException("User with id not found"));
+
+        UserDetails authenticatedUserDetails = this.getAuthenticatedUser();
+        User authenticatedUser = this.userRepository.findByEmail(authenticatedUserDetails.getUsername())
+                                                    .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (user.getEmail().equals(authenticatedUser.getEmail()) || authenticatedUser.getRole()
+                                                                                     .equals(UserRole.ADMIN)) {
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
+            user.setRole(request.getRole());
+            this.userRepository.save(user);
+        }
+
+        return UserResponse.builder()
+                           .id(user.getId())
+                           .email(user.getEmail())
+                           .firstName(user.getFirstName())
+                           .lastName(user.getLastName())
+                           .role(user.getRole().toString())
+                           .build();
+    }
+
+    @Override
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
+    }
+    private UserDetails getAuthenticatedUser() throws UserNotAuthenticatedException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth == null) {
@@ -89,11 +126,9 @@ public class UserServiceImpl implements UserService {
             Object principal = authToken.getPrincipal();
 
             if (principal instanceof UserDetails userDetails) {
-                return userDetails.getUsername();
+                return userDetails;
             }
         }
         throw new UserNotAuthenticatedException("User not authenticated");
     }
-
-
 }

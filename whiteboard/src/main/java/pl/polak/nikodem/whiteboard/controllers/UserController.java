@@ -4,9 +4,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import pl.polak.nikodem.whiteboard.dtos.user.ChangeUserDataRequest;
 import pl.polak.nikodem.whiteboard.dtos.user.UserRequest;
 import pl.polak.nikodem.whiteboard.dtos.user.UserResponse;
+import pl.polak.nikodem.whiteboard.exceptions.UserNotAuthenticatedException;
 import pl.polak.nikodem.whiteboard.exceptions.UserNotFoundException;
+import pl.polak.nikodem.whiteboard.services.interfaces.ProjectService;
 import pl.polak.nikodem.whiteboard.services.interfaces.UserService;
 
 import java.util.List;
@@ -34,5 +37,16 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserResponse getUserByEmail(@RequestBody @Valid UserRequest request) throws UserNotFoundException {
         return userService.getUserByEmail(request.getEmail());
+    }
+
+    @PatchMapping("/change")
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponse changeUserData(@RequestBody @Valid ChangeUserDataRequest request) throws UserNotFoundException, UserNotAuthenticatedException {
+        return this.userService.changeUserData(request);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        this.userService.deleteUserById(id);
     }
 }
