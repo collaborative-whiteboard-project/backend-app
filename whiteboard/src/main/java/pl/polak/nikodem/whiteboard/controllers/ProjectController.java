@@ -41,6 +41,12 @@ public class ProjectController {
         return projectService.getProjectOwners(id, email);
     }
 
+    @GetMapping("{id}")
+    public ProjectResponse getProjectById(@PathVariable Long id) throws ProjectNotFoundException, UserNotAuthenticatedException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
+        String email = userService.getAuthenticatedUserEmail();
+        return projectService.getProjectById(id, email);
+    }
+
     @PostMapping("/create")
     public void createProject(@RequestBody @Valid CreateProjectRequest createProjectRequest) throws UserNotAuthenticatedException, UserNotFoundException {
         String email = userService.getAuthenticatedUserEmail();
@@ -51,6 +57,11 @@ public class ProjectController {
     public void addProjectMembers(@PathVariable Long id, @RequestBody @Valid AddProjectMembersRequest request) throws UserNotAuthenticatedException, UserNotFoundException, ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
         String email = userService.getAuthenticatedUserEmail();
         projectService.addProjectMembers(id, email, request.getMembers());
+    }
+
+    @PatchMapping("/{id}/change/data")
+    public void changeProjectData(@PathVariable Long id, @RequestBody @Valid ChangeProjectDataRequest request) throws ProjectNotFoundException {
+        this.projectService.changeProjectData(id, request);
     }
 
     @DeleteMapping("/{id}/members/delete")
