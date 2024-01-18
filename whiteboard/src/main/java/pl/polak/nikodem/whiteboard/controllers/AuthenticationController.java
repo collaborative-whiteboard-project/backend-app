@@ -37,8 +37,8 @@ public class AuthenticationController {
     }
 
     @PatchMapping("/reset/password")
-    public void resetUserPassword(@RequestBody @Valid ResetPasswordRequest request) {
-
+    public void resetUserPassword(@RequestBody @Valid ResetPasswordRequest request) throws UserNotFoundException {
+        this.authenticationService.resetUserPassword(request);
     }
 
 }
