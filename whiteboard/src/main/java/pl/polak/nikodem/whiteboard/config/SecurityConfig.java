@@ -51,7 +51,7 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults())
             .csrf(csfr -> csfr.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/v1/auth/signin", "/api/v1/auth/signup")
+            .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/v1/auth/signin", "/api/v1/auth/signup", "/api/v1/auth/reset/password/email", "/api/v1/auth/reset/password")
                                                          .permitAll()
                                                          .anyRequest()
                                                          .authenticated())
@@ -61,7 +61,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
