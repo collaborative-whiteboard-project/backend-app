@@ -1,4 +1,4 @@
-package pl.polak.nikodem.whiteboard.validators.enums.userRole;
+package pl.polak.nikodem.whiteboard.validators.enums.projectMemberRole;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -7,11 +7,11 @@ import jakarta.validation.constraints.NotNull;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = UserRoleEnumValidatorConstraint.class)
+@Constraint(validatedBy = ProjectMemberRoleEnumValidatorConstraint.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @NotNull
-public @interface UserRoleEnumValidator {
+public @interface ProjectMemberRoleEnumValidator {
 
     Class<? extends Enum<?>> enumClass();
     String message() default "not_an_enum {enum}";

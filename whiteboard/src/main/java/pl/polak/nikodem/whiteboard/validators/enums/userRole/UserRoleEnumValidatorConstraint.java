@@ -1,8 +1,9 @@
-package pl.polak.nikodem.whiteboard.validators.enums;
+package pl.polak.nikodem.whiteboard.validators.enums.userRole;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import pl.polak.nikodem.whiteboard.enums.UserRole;
+import pl.polak.nikodem.whiteboard.validators.enums.userRole.UserRoleEnumValidator;
 
 import java.util.Set;
 import java.util.stream.Collectors;
