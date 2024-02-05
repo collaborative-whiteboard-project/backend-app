@@ -1,0 +1,33 @@
+databaseChangeLog:
+- changeSet:
+    id: 1702561116983-1
+    author: Niko (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: projectsPK
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: created_at
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            name: modified_at
+            type: TIMESTAMP(6) WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: project_name
+            type: VARCHAR(255)
+        - column:
+            name: whiteboard_elements
+            type: JSON
+        tableName: projects
+

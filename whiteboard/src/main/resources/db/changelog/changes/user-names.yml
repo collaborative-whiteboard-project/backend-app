@@ -1,0 +1,31 @@
+databaseChangeLog:
+- changeSet:
+    id: 1705451985455-1
+    author: Niko (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: first_name
+            type: varchar(255)
+        tableName: users
+- changeSet:
+    id: 1705451985455-2
+    author: Niko (generated)
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: last_name
+            type: varchar(255)
+        tableName: users
+- changeSet:
+    id: 1705451985455-3
+    author: Niko (generated)
+    changes:
+    - dropUniqueConstraint:
+        constraintName: users_email_key
+        tableName: users
+

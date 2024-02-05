@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-unique-constraint
+      author: Nikodem Polak
+      changes:
+        - addUniqueConstraint:
+            constraintName: UN6a7c2374-41e2-4f15-ada5-77b2ce61c097
+            tableName: users
+            columnNames: email
