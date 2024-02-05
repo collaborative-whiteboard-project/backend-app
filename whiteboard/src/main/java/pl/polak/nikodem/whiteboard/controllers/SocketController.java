@@ -7,9 +7,7 @@ import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.listener.DataListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import pl.polak.nikodem.whiteboard.dtos.socket.JoinProjectData;
-import pl.polak.nikodem.whiteboard.dtos.socket.LeaveProjectData;
-import pl.polak.nikodem.whiteboard.dtos.socket.WhiteboardOperationData;
+import pl.polak.nikodem.whiteboard.dtos.socket.*;
 import pl.polak.nikodem.whiteboard.exceptions.ProjectNotFoundException;
 import pl.polak.nikodem.whiteboard.services.interfaces.SocketService;
 
@@ -27,7 +25,9 @@ public class SocketController {
         this.socketIOServer.addDisconnectListener(this::onDisconnected);
         this.socketIOServer.addEventListener("joinProject", JoinProjectData.class, onJoinProject());
         this.socketIOServer.addEventListener("leaveProject", LeaveProjectData.class, onLeaveProject());
-        this.socketIOServer.addEventListener("editWhiteboard", WhiteboardOperationData.class, onWhiteboardEdit());
+        this.socketIOServer.addEventListener("createWhiteboardElement", CreateWhiteboardElementData.class, createWhiteboardElement());
+        this.socketIOServer.addEventListener("updateWhiteboardElement", UpdateWhiteboardElementData.class, updateWhiteboardElement());
+        this.socketIOServer.addEventListener("deleteWhiteboardElement", DeleteWhiteboardElementData.class, deleteWhiteboardElement());
     }
 
     @OnConnect
@@ -48,6 +48,7 @@ public class SocketController {
     private DataListener<JoinProjectData> onJoinProject() {
         return (client, data, ackSender) -> {
             try {
+                log.debug("Connected to " + data.getProjectId() + " project");
                 socketService.joinRoom(client, data.getJwtToken(), data.getProjectId());
             } catch (Exception e) {
                 this.socketService.sendErrorMessage( client, e.getMessage());
@@ -55,7 +56,19 @@ public class SocketController {
         };
     }
 
-    private DataListener<WhiteboardOperationData> onWhiteboardEdit() {
+    private DataListener<CreateWhiteboardElementData> createWhiteboardElement() {
+        return (client, data, ackSender) -> {
+            socketService.editWhiteboard(client, data);
+        };
+    }
+
+    private DataListener<UpdateWhiteboardElementData> updateWhiteboardElement() {
+        return (client, data, ackSender) -> {
+          socketService.editWhiteboard(client, data);
+        };
+    }
+
+    private DataListener<DeleteWhiteboardElementData> deleteWhiteboardElement() {
         return (client, data, ackSender) -> {
             socketService.editWhiteboard(client, data);
         };
