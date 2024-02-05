@@ -17,6 +17,11 @@ public class ProjectController {
     private final ProjectService projectService;
     private final UserService userService;
 
+    @GetMapping("/all")
+    public List<SimpleProjectResponse> getAllProjects() {
+        return projectService.getAllProjects();
+    }
+
     @GetMapping("/user/all")
     public List<SimpleProjectResponse> getUserProjects() throws UserNotAuthenticatedException, UserNotFoundException {
         String email = userService.getAuthenticatedUserEmail();
@@ -24,25 +29,25 @@ public class ProjectController {
     }
 
     @GetMapping("/content/{id}")
-    public ProjectContentResponse getProjectContent(@PathVariable Long id) throws ProjectNotFoundException, UserNotAuthenticatedException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
+    public ProjectContentResponse getProjectContent(@PathVariable Long id) throws ProjectNotFoundException, UserNotAuthenticatedException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException, UserNotFoundException {
         String email = userService.getAuthenticatedUserEmail();
         return projectService.getProjectContent(id, email);
     }
 
     @GetMapping("/{id}/members")
-    public List<ProjectMemberResponse> getProjectMembers(@PathVariable Long id) throws UserNotAuthenticatedException, ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
+    public List<ProjectMemberResponse> getProjectMembers(@PathVariable Long id) throws UserNotAuthenticatedException, ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException, UserNotFoundException {
         String email = userService.getAuthenticatedUserEmail();
         return projectService.getProjectMembers(id, email);
     }
 
     @GetMapping("/{id}/owners")
-    public List<ProjectMemberResponse> getProjectOwners(@PathVariable Long id) throws UserNotAuthenticatedException, ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
+    public List<ProjectMemberResponse> getProjectOwners(@PathVariable Long id) throws UserNotAuthenticatedException, ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException, UserNotFoundException {
         String email = userService.getAuthenticatedUserEmail();
         return projectService.getProjectOwners(id, email);
     }
 
     @GetMapping("{id}")
-    public ProjectResponse getProjectById(@PathVariable Long id) throws ProjectNotFoundException, UserNotAuthenticatedException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
+    public ProjectResponse getProjectById(@PathVariable Long id) throws ProjectNotFoundException, UserNotAuthenticatedException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException, UserNotFoundException {
         String email = userService.getAuthenticatedUserEmail();
         return projectService.getProjectById(id, email);
     }
@@ -65,13 +70,13 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{id}/members/delete")
-    public void deleteProjectMembers(@PathVariable Long id, @RequestBody @Valid DeleteProjectMembersRequest request) throws UserNotAuthenticatedException, ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
+    public void deleteProjectMembers(@PathVariable Long id, @RequestBody @Valid DeleteProjectMembersRequest request) throws UserNotAuthenticatedException, ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException, UserNotFoundException {
         String email = userService.getAuthenticatedUserEmail();
         projectService.deleteProjectMembers(id, email, request.getEmails());
     }
 
     @DeleteMapping("/{id}/delete")
-    public void deleteProject(@PathVariable Long id) throws UserNotAuthenticatedException, ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException {
+    public void deleteProject(@PathVariable Long id) throws UserNotAuthenticatedException, ProjectNotFoundException, UserNotAProjectMemberException, InsufficientProjectMemberRoleException, UserNotFoundException {
         String email = userService.getAuthenticatedUserEmail();
         projectService.deleteProject(id, email);
     }

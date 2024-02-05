@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import pl.polak.nikodem.whiteboard.enums.ProjectMemberRole;
-import pl.polak.nikodem.whiteboard.validators.enums.EnumValidator;
+import pl.polak.nikodem.whiteboard.validators.enums.projectMemberRole.ProjectMemberRoleEnumValidator;
 
 @Getter
 @Setter
@@ -18,6 +18,6 @@ public class ProjectMember {
     @NotNull(message = "email_is_null")
     private String memberEmail;
 
-    @EnumValidator(enumClass = ProjectMemberRole.class, message = "not_project_member_role_enum")
-    private String memberRole;
+    @ProjectMemberRoleEnumValidator(enumClass = ProjectMemberRole.class, message = "not_project_member_role_enum")
+    private ProjectMemberRole memberRole;
 }

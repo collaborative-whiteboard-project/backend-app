@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectContentResponse {
+    private String projectId;
     private List<WhiteboardElement> elements;
 
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
