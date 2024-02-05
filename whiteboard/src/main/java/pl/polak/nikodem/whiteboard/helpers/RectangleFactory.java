@@ -11,7 +11,7 @@ public class RectangleFactory implements WhiteboardElementFactory {
     public WhiteboardElement createWhiteboardElement(JSONObject elementJSON) {
         try {
             return Rectangle.builder()
-                            .elementType(ElementType.RECT)
+                            .elementType(ElementType.RECTANGLE)
                             .id(elementJSON.getString("id"))
                             .transform(elementJSON.getString("transform"))
                             .xPosition(elementJSON.getString("x-position"))

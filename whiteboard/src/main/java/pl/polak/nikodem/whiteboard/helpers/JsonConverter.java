@@ -38,7 +38,7 @@ public class JsonConverter implements AttributeConverter<List<WhiteboardElement>
                 String elementType = elementJSON.getString("element-type");
 
                 whiteboardElementFactory = switch (elementType) {
-                    case "RECT" -> Optional.of(new RectangleFactory());
+                    case "RECTANGLE" -> Optional.of(new RectangleFactory());
                     case "CIRCLE" -> Optional.of(new CircleFactory());
                     case "LINE" -> Optional.of(new LineFactory());
                     case "PATH" -> Optional.of(new PathFactory());
