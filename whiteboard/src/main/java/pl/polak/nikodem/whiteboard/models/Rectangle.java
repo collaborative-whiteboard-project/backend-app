@@ -53,4 +53,23 @@ public class Rectangle extends WhiteboardElement {
             }
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Rectangle rect) {
+            return this.id == rect.id &&
+                    this.xPosition == rect.xPosition &&
+                    this.yPosition == rect.yPosition &&
+                    this.width == rect.width &&
+                    this.height == rect.height &&
+                    this.strokeColor == rect.strokeColor &&
+                    this.strokeWidth == rect.strokeWidth &&
+                    this.fillColor == rect.fillColor &&
+                    this.fillOpacity == rect.fillOpacity &&
+                    this.elementType == rect.elementType &&
+                    this.transform == rect.transform;
+
+        }
+        return false;
+    }
 }
