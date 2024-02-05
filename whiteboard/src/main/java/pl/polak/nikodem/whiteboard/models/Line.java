@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Line extends WhiteboardElement{
-    @JsonProperty("lini ")
+    @JsonProperty("x1-position")
     private String x1Position;
 
     @JsonProperty("y1-position")

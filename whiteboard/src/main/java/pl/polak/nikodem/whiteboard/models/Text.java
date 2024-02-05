@@ -32,7 +32,7 @@ public class Text extends WhiteboardElement {
             case "x-position" -> this.xPosition = value;
             case "y-position" -> this.yPosition = value;
             case "text" -> this.text = value;
-            case "fontSize" -> this.fontSize = value;
+            case "font-size" -> this.fontSize = value;
             default -> {
             }
         }
