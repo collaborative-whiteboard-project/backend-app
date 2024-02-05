@@ -17,5 +17,5 @@ public interface UserService {
     UserResponse getUserByEmail(String email) throws UserNotFoundException;
     String getAuthenticatedUserEmail() throws UserNotAuthenticatedException;
     UserResponse changeUserData(ChangeUserDataRequest request) throws UserNotFoundException, UserNotAuthenticatedException;
-    void deleteUserById(Long id);
+    void deleteUserById(Long id) throws UserNotFoundException;
 }

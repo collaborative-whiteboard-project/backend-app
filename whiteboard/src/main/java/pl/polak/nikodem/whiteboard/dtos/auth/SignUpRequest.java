@@ -18,6 +18,13 @@ public class SignUpRequest {
     @NotNull(message = "email_is_null")
     private String email;
 
+    @NotNull(message = "first_name_is_null")
+    @NotEmpty(message = "first_name_is_empty")
+    @NotNull(message = "first_name_is_null")
+    private String firstName;
+
+    private String lastName;
+
     @Size(min = 8, message = "password_too_short")
     @Size(max = 100, message = "password_too_long")
     @NotNull(message = "password_is_null")

@@ -1,5 +1,6 @@
 package pl.polak.nikodem.whiteboard.services.implementations;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,10 +11,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.polak.nikodem.whiteboard.dtos.user.ChangeUserDataRequest;
 import pl.polak.nikodem.whiteboard.dtos.user.UserResponse;
+import pl.polak.nikodem.whiteboard.entities.Project;
 import pl.polak.nikodem.whiteboard.entities.User;
+import pl.polak.nikodem.whiteboard.entities.UserProject;
 import pl.polak.nikodem.whiteboard.enums.UserRole;
 import pl.polak.nikodem.whiteboard.exceptions.UserNotAuthenticatedException;
 import pl.polak.nikodem.whiteboard.exceptions.UserNotFoundException;
+import pl.polak.nikodem.whiteboard.repositories.ProjectRepository;
 import pl.polak.nikodem.whiteboard.repositories.UserRepository;
 import pl.polak.nikodem.whiteboard.services.interfaces.UserService;
 
@@ -24,6 +28,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
 
     public UserDetailsService userDetailsService() {
         return new UserDetailsService() {
@@ -112,7 +117,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserById(Long id) {
+    @Transactional
+    public void deleteUserById(Long id) throws UserNotFoundException {
+        User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User with id not found."));
+        List<UserProject> projects = user.getProjects();
+        projects.forEach(project -> {
+            Project project1 = project.getProject();
+            if (project1.getMembers().size() == 1) {
+                projectRepository.delete(project1);
+            }
+        });
         userRepository.deleteById(id);
     }
     private UserDetails getAuthenticatedUser() throws UserNotAuthenticatedException {

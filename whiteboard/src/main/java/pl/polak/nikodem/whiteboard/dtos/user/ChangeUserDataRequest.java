@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import pl.polak.nikodem.whiteboard.enums.UserRole;
-import pl.polak.nikodem.whiteboard.validators.enums.EnumValidator;
+import pl.polak.nikodem.whiteboard.validators.enums.userRole.UserRoleEnumValidator;
 
 @Getter
 @Setter
@@ -23,6 +23,6 @@ public class ChangeUserDataRequest {
     private String lastName;
 
     @NotNull(message = "role_is_ull")
-    @EnumValidator(enumClass = UserRole.class, message = "not_user_role_enum")
+    @UserRoleEnumValidator(enumClass = UserRole.class, message = "not_user_role_enum")
     private UserRole role;
 }
