@@ -7,11 +7,11 @@ import jakarta.validation.constraints.NotNull;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = EnumValidatorConstraint.class)
+@Constraint(validatedBy = UserRoleEnumValidatorConstraint.class)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @NotNull
-public @interface EnumValidator {
+public @interface UserRoleEnumValidator {
 
     Class<? extends Enum<?>> enumClass();
     String message() default "not_an_enum {enum}";
