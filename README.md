@@ -1,4 +1,4 @@
-# backend-app
+# Collaborative Whiteboard
 Backend for sketching application on a virtual board that supports group work
 
 Backend application is written in Spring Boot. It also uses PostgresSQL database and Socket.IO library to provide real-time features. Its main function is to enable multiple users to work
